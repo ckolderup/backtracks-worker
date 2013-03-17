@@ -1,7 +1,6 @@
 class Track
-  @title = nil
-  @artist = nil
-  @cover = nil
+  attr_reader :title
+  attr_reader :artist
 
   def initialize(param = {})
     @title = param[:title]

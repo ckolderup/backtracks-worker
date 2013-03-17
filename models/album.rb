@@ -1,7 +1,7 @@
 class Album
-  @title = nil
-  @artist = nil
-  @cover = nil
+  attr_reader :title
+  attr_reader :artist
+  attr_reader :cover
 
   def initialize(param = {})
     @title = param[:title]

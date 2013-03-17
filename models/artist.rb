@@ -1,5 +1,5 @@
 class Artist
-  @name = nil
+  attr_reader :name
 
   def initialize(param = {})
     @name = param[:name]

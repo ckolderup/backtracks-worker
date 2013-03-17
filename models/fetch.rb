@@ -57,23 +57,23 @@ class Fetch
       c['from'].to_i <= last_year.to_i && c['to'].to_i >= last_year.to_i
     }.first
 
-    artists = fetch_chart(:method => LASTFM_ARTIST,
-                          :user => user,
-                          :from => chart['from'], :to => chart['to'],
-                          :chart_size => 10,
-                          :format => "new_artist")
+    artists = nil #fetch_chart(:method => LASTFM_ARTIST,
+                  #        :user => user,
+                  #        :from => chart['from'], :to => chart['to'],
+                  #        :chart_size => chart_size,
+                  #        :format => "new_artist")
 
     albums = fetch_chart(:method => LASTFM_ALBUM,
                           :user => user,
                           :from => chart['from'], :to => chart['to'],
-                          :chart_size => 10,
+                          :chart_size => chart_size,
                           :format => "new_album")
 
-    tracks = fetch_chart(:method => LASTFM_TRACK,
-                          :user => user,
-                          :from => chart['from'], :to => chart['to'],
-                          :chart_size => 10,
-                          :format => "new_track")
+    tracks = nil #fetch_chart(:method => LASTFM_TRACK,
+                 #         :user => user,
+                 #         :from => chart['from'], :to => chart['to'],
+                 #         :chart_size => chart_size,
+                 #         :format => "new_track")
 
     [artists, albums, tracks]
   end
