@@ -33,8 +33,12 @@ class Fetch
   end
 
   def new_album(album)
-    Album.new(:title => album['name'],
-              :artist => album['artist']['content'])
+    response = @lastfm.album.get_info(:artist => album['artist']['content'],
+                           :album => album['name'],
+                           :mbid => album['mbid'])
+    Album.new(:title => response['name'],
+              :artist => response['artist'],
+              :cover => (response['image'].select{|img| img['size'] == 'large'}.first)['content'])
   end
 
   def new_track(track)
