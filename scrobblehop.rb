@@ -1,29 +1,36 @@
 require 'sinatra'
+require 'sinatra/mustache'
 
 require_relative 'models/artist'
 require_relative 'models/album'
 require_relative 'models/track'
 require_relative 'models/fetch'
+require_relative 'mailer'
 
-get '/' do
-  response = ""
+get '/view' do
+  chart_v1
+end
+
+
+get '/send' do
+  send_email("ckolderup@gmail.com", "Weekly Album Charts", chart_v1)
+  "OK"
+end
+
+def chart_v1
   fetch = Fetch.new
-  (1..3).each do |y|
 
-    response << "<h2>#{y} Year#{y == 1 ? "": "s"} Ago</h2>\n\n"
+  @years = (1..3).map do |y|
     (artists, albums, tracks) = fetch.get_charts(:user => "caseyk",
                         :years_ago => y,
                         :chart_size => 15)
 
-    albums.each_slice(5) do |row|
-      row.each do |album|
-        cover = album.cover
-        cover ||= "http://placekitten.com/174/174"
-        response << "<img src=\"#{cover}\">\n"
-      end
-      response << "<br>\n"
-    end
+    {
+      num: y,
+      plural: (y == 1)? "" : "s",
+      album_rows: albums.each_slice(5).map { |row| { albums: row } }
+    }
   end
 
-  response
+  mustache(:email)
 end
