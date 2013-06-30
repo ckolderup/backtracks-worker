@@ -1,0 +1,8 @@
+%html
+  %body
+    - years.each do |year|
+      %h2= "#{year[:num]} Year#{year[:plural]} Ago"
+
+      - year[:album_rows].each do |row|
+        - row[:albums].each do |album|
+          %img{:src => album.cover}

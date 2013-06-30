@@ -1,5 +1,4 @@
 require 'sinatra'
-require 'sinatra/mustache'
 
 require_relative 'models/artist'
 require_relative 'models/album'

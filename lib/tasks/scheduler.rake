@@ -8,7 +8,7 @@ task :send_emails => :environment do
 
 
   @users.each do |u|
-    Mailer.send_email(u.email, @subject, Scrobble.chart_v1(u.username))
+    Mailer.send_email(u[:email], @subject, Scrobble.chart_v1(u[:username]))
   end
   puts "done."
 end

@@ -1,7 +1,7 @@
 require 'mandrill'
 
 module Mailer
-  def send_email(email_address, subject, body)
+  def self.send_email(email_address, subject, body)
     mailer = Mandrill::API.new
     config = {
       :html => body,
