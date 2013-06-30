@@ -6,31 +6,17 @@ require_relative 'models/album'
 require_relative 'models/track'
 require_relative 'models/fetch'
 require_relative 'mailer'
+require_relative 'scrobble'
 
 get '/view' do
-  chart_v1
+  Scrobble.chart_v1(params[:username])
 end
 
-
 get '/send' do
-  send_email("ckolderup@gmail.com", "Weekly Album Charts", chart_v1)
+  @address = params[:email]
+  @subject = params[:subject] || "Weekly Album Charts"
+  @username = params[:username]
+  Mailer.send_email(@address, @subject, Scrobble.chart_v1(@username))
   "OK"
 end
 
-def chart_v1
-  fetch = Fetch.new
-
-  @years = (1..3).map do |y|
-    (artists, albums, tracks) = fetch.get_charts(:user => "caseyk",
-                        :years_ago => y,
-                        :chart_size => 15)
-
-    {
-      num: y,
-      plural: (y == 1)? "" : "s",
-      album_rows: albums.each_slice(5).map { |row| { albums: row } }
-    }
-  end
-
-  mustache(:email)
-end
