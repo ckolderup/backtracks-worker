@@ -2,10 +2,10 @@ require_relative 'models/fetch'
 require 'haml'
 
 module Scrobble
-  def self.chart_v1(username)
+  def self.chart_v1(username, year_range=(1..3))
     fetch = Fetch.new
 
-    years = (1..3).map do |y|
+    years = year_range.map do |y|
       (artists, albums, tracks) = fetch.get_charts(:user => username,
                           :years_ago => y,
                           :chart_size => 15)
