@@ -15,7 +15,7 @@ get '/send' do
   @address = params[:email]
   @subject = params[:subject] || "Weekly Album Charts"
   @username = params[:username]
-  Mailer.send_email(@address, @subject, Scrobble.chart_v1(@username))
+  Mailer.send_email(@address, @subject, Scrobble.chart_v1(@username, [1,2,3,5]))
   "OK"
 end
 

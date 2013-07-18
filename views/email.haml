@@ -1,8 +1,54 @@
 %html
-  %body
+  %body{:style => "width: 550px; margin: 10px auto"}
+    %a{:href => "http://backtracks.co"}
+      %center
+        %h1 BackTracks
+
+    %div{:style => "width:550px"}
+      Hi! You're using backtracks.co in its ULTRA EARLY INFANCY stage. Sorry      |
+      it's such a pile of shit. Hopefully you don't mind getting the occasional   |
+      email as I work things out? Ok thanks! You *should* be able to opt out on   |
+      the website... if not then let me know and I'll go in and fiddle with the   |
+      database manually. Anyway here's an email!                                  |
+
     - years.each do |year|
+      - next if year[:album_rows].empty?
       %h2= "#{year[:num]} Year#{year[:plural]} Ago"
 
-      - year[:album_rows].each do |row|
-        - row[:albums].each do |album|
-          %img{:src => album.cover}
+      %h3 Albums
+
+      %table
+        - year[:album_rows].each do |row|
+          %tr
+            - row[:albums].each do |album|
+              %td
+                %a{:href => album.url}
+                  %img{:src => album.cover}
+
+      %table
+        %tr
+          %th{:width => 275}
+            %h3 Artists
+          %th{:width => 275}
+            %h3 Tracks
+        %tr
+          %td{:width => 275}
+            - if year[:artists].empty?
+              %center
+                %small No Data
+            - else
+              %ol
+                - year[:artists].each do |artist|
+                  %li
+                    %a{:href => artist.url}
+                      = artist.name
+          %td{:width => 275}
+            - if year[:tracks].empty?
+              %center
+                %small No Data
+            - else
+              %ol
+                - year[:tracks].each do |track|
+                  %li
+                    %a{:href => track.url}
+                      = "#{track.artist} - #{track.title}"

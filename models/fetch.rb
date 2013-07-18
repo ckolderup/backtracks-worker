@@ -24,26 +24,33 @@ class Fetch
     chart_size = param[:chart_size]
     format = param[:format]
 
-    response = @lastfm.user.send(method, :user => user, :from => from, :to => to).andand.take(chart_size)
-    response.andand.map { |item| send(format, item) }
+    begin
+      response = @lastfm.user.send(method, :user => user, :from => from, :to => to).andand.take(chart_size)
+      response.andand.map { |item| send(format, item) }
+    rescue
+      []
+    end
   end
 
   def new_artist(artist)
-    Artist.new(:name => artist['name'])
+    Artist.new(:name => artist['name'], :url => artist['url'])
   end
 
   def new_album(album)
     response = @lastfm.album.get_info(:artist => album['artist']['content'],
                            :album => album['name'],
-                           :mbid => album['mbid'])
+                           :mbid => album['mbid'],
+                           :url => album['url'])
     Album.new(:title => response['name'],
               :artist => response['artist'],
+              :url => response['url'],
               :cover => (response['image'].select{|img| img['size'] == 'large'}.first)['content'])
   end
 
   def new_track(track)
     Track.new(:title => track['name'],
-              :artist => track['artist']['content'])
+              :artist => track['artist']['content'],
+              :url => track['url'])
   end
 
   def get_charts(params = {})
@@ -57,11 +64,13 @@ class Fetch
       c['from'].to_i <= last_year.to_i && c['to'].to_i >= last_year.to_i
     }.first
 
-    artists = nil #fetch_chart(:method => LASTFM_ARTIST,
-                  #        :user => user,
-                  #        :from => chart['from'], :to => chart['to'],
-                  #        :chart_size => chart_size,
-                  #        :format => "new_artist")
+    return [[],[],[]] if chart.nil?
+
+    artists = fetch_chart(:method => LASTFM_ARTIST,
+                          :user => user,
+                          :from => chart['from'], :to => chart['to'],
+                          :chart_size => chart_size,
+                          :format => "new_artist")
 
     albums = fetch_chart(:method => LASTFM_ALBUM,
                           :user => user,
@@ -69,11 +78,11 @@ class Fetch
                           :chart_size => chart_size,
                           :format => "new_album")
 
-    tracks = nil #fetch_chart(:method => LASTFM_TRACK,
-                 #         :user => user,
-                 #         :from => chart['from'], :to => chart['to'],
-                 #         :chart_size => chart_size,
-                 #         :format => "new_track")
+    tracks = fetch_chart(:method => LASTFM_TRACK,
+                         :user => user,
+                         :from => chart['from'], :to => chart['to'],
+                         :chart_size => chart_size,
+                         :format => "new_track")
 
     [artists, albums, tracks]
   end

@@ -6,7 +6,7 @@ module Mailer
     config = {
       :html => body,
       :from_email => "casey@kolderup.org",
-      :from_name => "Scrobblehop",
+      :from_name => "BackTracks",
       :subject => subject,
       :to => [ {:email => email_address} ],
       :async => true
