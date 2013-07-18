@@ -5,7 +5,7 @@ module Mailer
     mailer = Mandrill::API.new
     config = {
       :html => body,
-      :from_email => "casey@kolderup.org",
+      :from_email => "feedback@backtracks.co",
       :from_name => "BackTracks",
       :subject => subject,
       :to => [ {:email => email_address} ],
