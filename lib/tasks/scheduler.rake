@@ -15,11 +15,7 @@ task :send_emails => :environment do
     users = JSON.parse(response.body)
 
     users.each do |u|
-      begin
-        Mailer.send_email(u['email'], @subject, Scrobble.chart_v1(u['username'], [1,2,3]))
-      rescue
-        next
-      end
+      Mailer.send_email(u['email'], @subject, Scrobble.chart_v1(u['username'], [1,2,3]))
     end
     Mailer.send_email(@admin, "Processed #{users.size} users successfully.", '')
   end
