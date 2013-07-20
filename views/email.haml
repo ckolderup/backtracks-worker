@@ -23,7 +23,7 @@
             - row[:albums].each do |album|
               %td
                 %a{:href => album.url}
-                  %img{:src => album.cover}
+                  %img{:src => album.cover, :width => 160, :height => 160}
 
       %table
         %tr

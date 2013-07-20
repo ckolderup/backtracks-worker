@@ -2,12 +2,16 @@ require 'json'
 require 'httparty'
 
 desc "This task is called by the Heroku scheduler add-on"
-task :send_emails => :environment do
+task :send_emails, [:day] => :environment do |t, args|
   puts "Sending email..."
   @subject = "Your BackTracks for the Week"
   @admin = 'ckolderup@gmail.com'
 
-  response = HTTParty.get("http://backtracks.co/fetch?key=#{ENV['BACKTRACKS_API']}")
+  b = 7
+  p = args[:day] || Time.now.wday
+
+  #TODO: don't always fetch from production
+  response = HTTParty.get("http://backtracks.co/fetch?key=#{ENV['BACKTRACKS_API']}&p=#{p}&b=#{b}")
 
   if response.code != 200 then
     Mailer.send_email(@admin, 'UNABLE TO FETCH FROM BACKTRACKS USER DB', '')
@@ -19,8 +23,4 @@ task :send_emails => :environment do
     end
     Mailer.send_email(@admin, "Processed #{users.size} users successfully.", '')
   end
-end
-
-task :send_casey_email => :environment do
-  Mailer.send_email('ckolderup@gmail.com', 'BackTracks Manually Triggered Test Email', Scrobble.chart_v1('caseyk', [1,2,3,5,10]))
 end
