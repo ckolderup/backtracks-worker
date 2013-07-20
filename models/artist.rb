@@ -5,5 +5,6 @@ class Artist
   def initialize(param = {})
     @name = param[:name]
     @url = param[:url]
+    @url = "http://#{@url}" unless @url.start_with?("http://")
   end
 end
