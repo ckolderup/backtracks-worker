@@ -10,6 +10,7 @@ class Album
     @cover = param[:cover]
     @artist = param[:artist]
     @url = param[:url]
+    @url = "http://#{@url}" unless @url.start_with?("http://")
   end
 end
 

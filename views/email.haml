@@ -20,7 +20,7 @@
             - row[:albums].each do |album|
               %td
                 %a{:href => album.url}
-                  %img{:src => album.cover}
+                  %img{:src => album.cover, :width => 160, :height => 160}
 
       %table
         %tr
@@ -49,3 +49,7 @@
                   %li
                     %a{:href => track.url}
                       = "#{track.artist} - #{track.title}"
+
+    %div{:style => "font-size: 10px"}
+      You can unsubscribe from your <a href="http://backtracks.co/account">Account</a> page. |
+      Feedback? Just reply to this email.                                                    |
