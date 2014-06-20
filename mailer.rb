@@ -2,7 +2,7 @@ require 'mandrill'
 
 module Mailer
   def self.send_email(email_address, subject, body)
-    return if body.nil?
+    return false if body.nil?
 
     mailer = Mandrill::API.new
     config = {
@@ -15,5 +15,7 @@ module Mailer
     }
     result = mailer.messages.send(config)
     (result.first)[:status] == "sent"
+
+    return true
   end
 end

@@ -18,9 +18,10 @@ task :send_emails, [:day] => :environment do |t, args|
   else
     users = JSON.parse(response.body)
 
+    count = 0
     users.each do |u|
-      Mailer.send_email(u['email'], @subject, Scrobble.chart_v1(u['username'], [1,2,3]))
+      count += 1 if Mailer.send_email(u['email'], @subject, Scrobble.chart_v1(u['username'], [1,2,3]))
     end
-    Mailer.send_email(@admin, "Processed #{users.size} users successfully.", '')
+    Mailer.send_email(@admin, "Sent #{count} emails (#{users.size} possible users).", '')
   end
 end
