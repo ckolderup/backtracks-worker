@@ -26,8 +26,9 @@ module Scrobble
     end
 
     if years.select { |y| !y[:album_rows].empty? }.empty? then
-      template = File.read('views/sorry.haml')
-      Haml::Engine.new(template).render(Object.new, years: years)
+      nil
+      #template = File.read('views/sorry.haml')
+      #Haml::Engine.new(template).render(Object.new, years: years)
     else
       template = File.read('views/email.haml')
       Haml::Engine.new(template).render(Object.new, years: years)

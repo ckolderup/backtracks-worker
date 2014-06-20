@@ -60,6 +60,7 @@ class Fetch
 
     last_year = Time.now - (years_ago * 365 * 24 * 60 * 60)
 
+    #TODO: factor this out so it's not being repeated for every year
     chart = @lastfm.user.get_weekly_chart_list(:user => user).select { |c|
       c['from'].to_i <= last_year.to_i && c['to'].to_i >= last_year.to_i
     }.first
