@@ -1,4 +1,6 @@
-source :gemcutter, :github
+source "https://rubygems.org", :github
+ruby '2.1.2'
+
 gem "rack"
 gem "sinatra"
 gem "andand"
