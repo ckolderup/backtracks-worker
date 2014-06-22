@@ -25,7 +25,7 @@ module Scrobble
       }
     end
 
-    if years.select { |y| !y[:album_rows].empty? }.empty? then
+    if years.select { |y| !y[:album_rows].andand.empty? }.andand.empty? then
       nil
       #template = File.read('views/sorry.haml')
       #Haml::Engine.new(template).render(Object.new, years: years)

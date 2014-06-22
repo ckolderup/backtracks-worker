@@ -9,7 +9,7 @@
       Questions? Comments? Wanna say hello? Just hit reply!
 
     - years.each do |year|
-      - next if year[:album_rows].empty?
+      - next if year[:album_rows].andand.empty?
       %h2= "#{year[:num]} Year#{year[:plural]} Ago"
 
       %h3 Albums
@@ -30,7 +30,7 @@
             %h3 Tracks
         %tr
           %td{:width => 275}
-            - if year[:artists].empty?
+            - if year[:artists].andand.empty?
               %center
                 %small No Data
             - else
@@ -40,7 +40,7 @@
                     %a{:href => artist.url}
                       = artist.name
           %td{:width => 275}
-            - if year[:tracks].empty?
+            - if year[:tracks].andand.empty?
               %center
                 %small No Data
             - else
