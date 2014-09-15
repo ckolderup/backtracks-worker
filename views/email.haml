@@ -18,9 +18,10 @@
         - year[:album_rows].andand.each do |row|
           %tr
             - row[:albums].andand.each do |album|
+              - album_text = "#{album.artist} - #{album.title}"
               %td
                 %a{:href => album.url}
-                  %img{:src => album.cover, :width => 160, :height => 160}
+                  %img{:src => album.cover, :width => 160, :height => 160, :alt => album_text, :title => album_text }
 
       %table
         %tr
