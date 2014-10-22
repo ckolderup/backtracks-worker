@@ -8,6 +8,7 @@ end
 
 Dir.glob('lib/tasks/*.rake').each { |r| import r }
 
+desc "Send a single email"
 task :send_single_email, [:email, :username, :subject] => [:environment] do |t, args|
-  Mailer.send_email(args[:email], args[:subject], Scrobble.chart_v1(args[:username], [1,2,3,5,10]))
+  Mailer.send_email(args[:email], args[:subject], Scrobble.chart_v1(args[:username]))
 end

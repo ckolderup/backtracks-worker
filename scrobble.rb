@@ -5,17 +5,19 @@ module Scrobble
   @@CHART_SIZE = 6 # should be divisible by rows
   @@ROWS = 2
 
-  def self.chart_v1(username, year_range=(1..3))
+  def self.chart_v1(username, max_years=4)
     fetch = Fetch.new
+    years = []
 
-    years = year_range.map do |y|
+    years_ago = 1
+    while years.size < max_years && years_ago < 12 #chosen arbitrarily, idk
       (artists, albums, tracks) = fetch.get_charts(:user => username,
-                          :years_ago => y,
+                          :years_ago => years_ago,
                           :chart_size => @@CHART_SIZE)
 
-      {
-        num: y,
-        plural: (y == 1)? "" : "s",
+      result = {
+        num: years_ago,
+        plural: (years_ago == 1)? "" : "s",
         album_rows:
           albums.nil? ? [] : albums.each_slice(@@CHART_SIZE / @@ROWS).map { |row|
             { albums: row } 
@@ -23,13 +25,12 @@ module Scrobble
         artists: artists,
         tracks: tracks
       }
+
+      years << result if albums && albums.size >= 3
+      years_ago += 1
     end
 
-    if years.select { |y| !y[:album_rows].andand.empty? }.andand.empty? then
-      nil
-      #template = File.read('views/sorry.haml')
-      #Haml::Engine.new(template).render(Object.new, years: years)
-    else
+    unless years.select { |y| !y[:album_rows].andand.empty? }.andand.empty?
       template = File.read('views/email.haml')
       Haml::Engine.new(template).render(Object.new, years: years)
     end

@@ -20,7 +20,7 @@ task :send_emails, [:day] => :environment do |t, args|
 
     count = 0
     users.each do |u|
-      count += 1 if Mailer.send_email(u['email'], @subject, Scrobble.chart_v1(u['username'], [1,2,3]))
+      count += 1 if Mailer.send_email(u['email'], @subject, Scrobble.chart_v1(u['username']))
     end
     Mailer.send_email(@admin, "Sent #{count} emails (#{users.size} possible users).", '')
   end
