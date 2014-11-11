@@ -10,7 +10,7 @@
 
     - years.andand.each do |year|
       - next if year[:album_rows].andand.empty?
-      %h2= "#{year[:num]} Year#{year[:plural]} Ago"
+      %h2= "#{Time.now.strftime('%B')} #{Time.now.year - year[:num]}"
 
       %h3 Albums
 
